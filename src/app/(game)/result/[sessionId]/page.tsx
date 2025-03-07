@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { getCitiesAndCops, getGameSession, getSelections, getVehicles } from "@/lib/actions";
+import { getCitiesAndCops, getGameSession, getSelections } from "@/lib/actions";
 import { determineWinningCop } from "@/lib/utils";
 import { Loading } from "@/app/components/Loading";
 
@@ -13,9 +13,8 @@ export default async function ResultPage({ params }: { params: { sessionId: stri
 }
 
 async function ResultWrapper({ sessionId }: { sessionId: string }) {
-  const { cities, cops } = await getCitiesAndCops();
+  const { cops } = await getCitiesAndCops();
   const selections = await getSelections(sessionId);
-  const vehicles = await getVehicles();
   const gameSession = await getGameSession(sessionId);
 
   if (!gameSession) {
@@ -27,7 +26,7 @@ async function ResultWrapper({ sessionId }: { sessionId: string }) {
   }
 
   // Logic to determine the winning cop
-  const winningCop = await determineWinningCop(selections, gameSession, vehicles, cities, cops);
+  const winningCop = await determineWinningCop(selections, gameSession, cops);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-gradient-to-r from-blue-200 to-purple-200 text-gray-800">

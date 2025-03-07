@@ -12,6 +12,7 @@ export async function createGameSession() {
     const gameSession = await prisma.gameSession.create({
       data: { fugitiveCityId: fugitiveCity.id },
     });
+
     // Validate the game session
     const validatedGameSession = GameSessionSchema.parse(gameSession);
     return validatedGameSession.id;
@@ -30,6 +31,7 @@ export async function getCitiesAndCops() {
   try {
     const cities = await prisma.city.findMany();
     const cops = await prisma.cops.findMany();
+
     // Validate Cities and Cops
     const validatedCities = CitySchema.array().parse(cities);
     const validatedCops = CopsSchema.array().parse(cops);
@@ -57,6 +59,7 @@ export async function getGameSession(gameSessionId: string) {
     const gameSession = await prisma.gameSession.findUnique({
       where: { id: gameSessionId },
     });
+
     // Validate the game session
     const validatedGameSession = GameSessionSchema.parse(gameSession);
     return validatedGameSession;
@@ -72,8 +75,8 @@ export async function getSelections(gameSessionId: string) {
       where: { gameSessionId },
       include: { city: true, vehicle: true },
     });
+
     // Validate the selections
-    console.log("selections", selections)
     const validatedSelections = SelectionSchema.array().parse(selections);
     return validatedSelections;
   } catch (error) {
@@ -91,28 +94,24 @@ export async function updateSelections(selections: ISelection[], path: string) {
 
     if (existingSelections.length > 0) {
       // Update existing selections
-      const createdSelections = await Promise.all(
+      await Promise.all(
         existingSelections.map(async (existingSelection) => {
-          const selectionToUpdate = selections.find(selection => { console.log("here", selection.id, existingSelection.id); return selection.id === existingSelection.id });
-          console.log("selectionToUpdate", selectionToUpdate, existingSelection)
-          if (selectionToUpdate) { // Ensure selectionToUpdate is defined
-            const updatedSelection = await prisma.selection.update({
+          const selectionToUpdate = selections.find(selection => selection.id === existingSelection.id);
+          if (selectionToUpdate) {
+            return await prisma.selection.update({
               where: { id: existingSelection.id },
-              data: selectionToUpdate, // Use the found selection
+              data: selectionToUpdate,
             });
-            return updatedSelection;
           }
           return existingSelection; // Return the existing selection if no update is needed
         })
       );
-      console.log("createdSelections", createdSelections)
-      SelectionSchema.array().parse(createdSelections);
     }
 
+    // Revalidate paths based on the provided path
     if (path === 'city-selection') {
       revalidatePath(`/city-selection/${selections[0]?.gameSessionId}`);
-    }
-    else if (path === 'vehicle-selection') {
+    } else if (path === 'vehicle-selection') {
       revalidatePath(`/vehicle-selection/${selections[0]?.gameSessionId}`);
     }
   } catch (error) {
@@ -126,6 +125,7 @@ export async function createSelections(selections: ISelection[]) {
     await prisma.selection.createMany({
       data: selections,
     });
+
     revalidatePath(`/city-selection/${selections[0]?.gameSessionId}`);
   } catch (error) {
     console.error("Error creating selections:", error);

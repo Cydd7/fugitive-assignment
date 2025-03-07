@@ -1,6 +1,7 @@
+"use server";
 import { createSelections, updateSelections } from "./actions";
 import { prisma } from "@/lib/db";
-import { ISelection, IGameSession, IVehicle, ICity, ICop } from "@/lib/types";
+import { ISelection, IGameSession, ICop } from "@/lib/types";
 
 export const handleCitySelection = async (data: Record<string, string>, sessionId: string, selections: ISelection[]) => {
     let selectionsPayload = [];
@@ -22,7 +23,7 @@ export const handleCitySelection = async (data: Record<string, string>, sessionI
     }
 }
 
-export const handleVehicleSelection = async (data: Record<string, string>, sessionId: string, selections: ISelection[]) => {
+export const handleVehicleSelection = async (data: Record<string, string>, selections: ISelection[]) => {
     const selectionsPayload = selections.map((selection) => ({
         ...selection,
         vehicleId: parseInt(data[`cop-${selection.copId}`]),
@@ -30,7 +31,7 @@ export const handleVehicleSelection = async (data: Record<string, string>, sessi
     await updateSelections(selectionsPayload, 'vehicle-selection');
 }
 
-export async function determineWinningCop(selections: ISelection[], gameSession: IGameSession, vehicles: IVehicle[], cities: ICity[], cops: ICop[]) {
+export async function determineWinningCop(selections: ISelection[], gameSession: IGameSession, cops: ICop[]) {
     const { fugitiveCityId } = gameSession;
 
     // Check if the fugitive city is in the selections

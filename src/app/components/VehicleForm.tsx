@@ -26,7 +26,7 @@ export function VehicleForm({ cops, selections, vehicles }: { cops: ICop[], sele
   });
 
   async function handleVehicleFormSubmit(data: Record<string, string>) {
-    await handleVehicleSelection(data, sessionId, selections);
+    await handleVehicleSelection(data, selections);
     router.push(`/result/${sessionId}`);
   }
 

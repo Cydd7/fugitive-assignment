@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { ICop, IVehicle } from "./types";
 
+// Schema for creating city form
 export const createCityFormSchema = (cops: ICop[]) =>
   z.object({
     ...cops.reduce((acc: Record<string, z.ZodSchema>, cop) => {
@@ -16,6 +17,7 @@ export const createCityFormSchema = (cops: ICop[]) =>
     path: ["form"],
   });
 
+// Schema for creating vehicle form
 export const createVehicleFormSchema = (cops: ICop[], vehicles: IVehicle[]) =>
   z.object({
     ...cops.reduce((acc: Record<string, z.ZodSchema>, cop) => {
@@ -23,9 +25,7 @@ export const createVehicleFormSchema = (cops: ICop[], vehicles: IVehicle[]) =>
       return acc;
     }, {}),
   }).refine((data) => {
-    const vehicleCounts = vehicles.map(({ id, max_count }) => {
-      return { id, count: max_count }
-    })
+    const vehicleCounts = vehicles.map(({ id, max_count }) => ({ id, count: max_count }));
 
     cops.forEach((cop) => {
       const vehicleId = parseInt(data[`cop-${cop.id}`]);
@@ -33,7 +33,7 @@ export const createVehicleFormSchema = (cops: ICop[], vehicles: IVehicle[]) =>
       if (vehicleCount) {
         vehicleCount.count--;
       }
-    })
+    });
 
     return vehicleCounts.every((v) => v.count >= 0);
   }, {
@@ -41,12 +41,14 @@ export const createVehicleFormSchema = (cops: ICop[], vehicles: IVehicle[]) =>
     path: ["form"],
   });
 
+// Schema for City
 export const CitySchema = z.object({
   id: z.number(),
   name: z.string(),
   distance: z.number(),
 });
 
+// Schema for Vehicle
 export const VehicleSchema = z.object({
   id: z.number(),
   kind: z.string(),
@@ -54,18 +56,21 @@ export const VehicleSchema = z.object({
   max_count: z.number(),
 });
 
+// Schema for Cops
 export const CopsSchema = z.object({
   id: z.number(),
   name: z.string(),
   image: z.string(),
 });
 
+// Schema for Game Session
 export const GameSessionSchema = z.object({
   id: z.string().uuid(),
   fugitiveCityId: z.number(),
   createdAt: z.date(),
 });
 
+// Schema for Selection
 export const SelectionSchema = z.object({
   id: z.string().uuid(),
   copId: z.number(),
