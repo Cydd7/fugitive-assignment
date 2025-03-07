@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getCitiesAndCops, getGameSession, getSelections, getVehicles } from "@/lib/actions";
 import { determineWinningCop } from "@/lib/utils";
 
@@ -27,6 +28,13 @@ export default async function ResultPage({ params }: { params: { sessionId: stri
         ) : (
           <p className="text-lg">The fugitive escaped!</p>
         )}
+      </div>
+
+      {/* Add a button to go back to the home page */}
+      <div className="mt-8">
+        <Link href="/" className="bg-yellow-500 hover:bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg transition duration-300">
+          Restart Game
+        </Link>
       </div>
     </main>
   );

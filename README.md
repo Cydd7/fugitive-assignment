@@ -49,6 +49,9 @@ npx prisma db push
 
 npx prisma studio 
 
+To test the game, run the following command:
+npx playwright test tests/game.test.ts
+
 TODOS: 
 - Finish the logic for the game
 - Add scripts to support database
