@@ -30,7 +30,7 @@ export const createVehicleFormSchema = (cops: ICop[], vehicles: IVehicle[]) =>
     cops.forEach((cop) => {
       const vehicleId = parseInt(data[`cop-${cop.id}`]);
       const vehicleCount = vehicleCounts.find((v) => v.id === vehicleId);
-      if(vehicleCount){
+      if (vehicleCount) {
         vehicleCount.count--;
       }
     })
