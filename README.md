@@ -5,7 +5,7 @@ A web-based game where cops try to catch a fugitive by strategically selecting c
 ## Deployment
 
 The game is deployed on Vercel at
-https://fugitive-assignment-git-main-siddhants-projects-02d579ae.vercel.app
+https://fugitive-assignment.vercel.app
 
 ## Setup, Development and Testing Scripts
 
