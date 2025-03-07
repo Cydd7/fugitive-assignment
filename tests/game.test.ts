@@ -23,7 +23,9 @@ test.describe('Cop and Thief Game E2E Tests', () => {
         // 2. Start Game
         await test.step('Start Game Navigation', async () => {
             // Click start game and wait for navigation
-            await page.click('text=Start Game')
+            await page.click('text=Start Game');
+            // Wait for loading to finish and city selection form to appear
+            await page.waitForSelector('text=Select Cities for Cops', { state: 'visible' });
         });
 
         // 3. City Selection Page
@@ -42,7 +44,9 @@ test.describe('Cop and Thief Game E2E Tests', () => {
             }
 
             // Submit the form
-            await page.click('button[type="submit"]')
+            await page.click('button[type="submit"]');
+            // Wait for loading to finish and vehicle selection form to appear
+            await page.waitForSelector('text=Select Vehicles for Cops', { state: 'visible' });
         });
 
         // 4. Vehicle Selection Page
@@ -61,7 +65,9 @@ test.describe('Cop and Thief Game E2E Tests', () => {
             }
 
             // Submit the form
-            await page.click('button[type="submit"]')
+            await page.click('button[type="submit"]');
+            // Wait for loading to finish and result page to appear
+            await page.waitForSelector('text=Result', { state: 'visible' });
         });
 
         // 5. Result Page
@@ -82,7 +88,9 @@ test.describe('Cop and Thief Game E2E Tests', () => {
         // 1. Start Game
         await test.step('Start Game Navigation', async () => {
             // Click start game and wait for navigation
-            await page.click('text=Start Game')
+            await page.click('text=Start Game');
+            // Wait for loading to finish and city selection form to appear
+            await page.waitForSelector('text=Select Cities for Cops', { state: 'visible' });
         });
 
         // 2. City Selection Page
@@ -122,6 +130,8 @@ test.describe('Cop and Thief Game E2E Tests', () => {
 
             // Submit the form
             await page.click('button[type="submit"]');
+            // Wait for loading to finish and vehicle selection form to appear
+            await page.waitForSelector('text=Select Vehicles for Cops', { state: 'visible' });
         });
 
         // 3. Vehicle Selection Page
@@ -161,6 +171,8 @@ test.describe('Cop and Thief Game E2E Tests', () => {
 
             // Submit the form
             await page.click('button[type="submit"]');
+            // Wait for loading to finish and result page to appear
+            await page.waitForSelector('text=Result', { state: 'visible' });
         });
     });
 }); 

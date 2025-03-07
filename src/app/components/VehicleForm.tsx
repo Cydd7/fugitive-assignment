@@ -14,7 +14,7 @@ export function VehicleForm({ cops, selections, vehicles }: { cops: ICop[], sele
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     resolver: zodResolver(createVehicleFormSchema(cops, vehicles)),
     defaultValues: {
@@ -57,8 +57,12 @@ export function VehicleForm({ cops, selections, vehicles }: { cops: ICop[], sele
           {/* Display the refined error */}
           {errors.form && <Error error={errors.form.message?.toString() || ''} />}
 
-          <button type="submit" className="bg-yellow-500 hover:bg-yellow-400 text-black font-semibold py-2 px-4 rounded-lg transition duration-300">
-            Submit
+          <button
+            disabled={isSubmitting}
+            type="submit"
+            className="bg-yellow-500 hover:bg-yellow-400 text-black font-semibold py-2 px-4 rounded-lg transition duration-300 disabled:opacity-50"
+          >
+            {isSubmitting ? 'Submitting...' : 'Submit'}
           </button>
         </form>
       </div>

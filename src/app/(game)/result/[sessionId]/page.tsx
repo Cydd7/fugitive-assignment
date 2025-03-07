@@ -1,12 +1,22 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { getCitiesAndCops, getGameSession, getSelections, getVehicles } from "@/lib/actions";
 import { determineWinningCop } from "@/lib/utils";
+import { Loading } from "@/app/components/Loading";
 
 export default async function ResultPage({ params }: { params: { sessionId: string } }) {
+  return (
+    <Suspense fallback={<Loading />}>
+      <ResultWrapper sessionId={params.sessionId} />
+    </Suspense>
+  );
+}
+
+async function ResultWrapper({ sessionId }: { sessionId: string }) {
   const { cities, cops } = await getCitiesAndCops();
-  const selections = await getSelections(params.sessionId);
+  const selections = await getSelections(sessionId);
   const vehicles = await getVehicles();
-  const gameSession = await getGameSession(params.sessionId);
+  const gameSession = await getGameSession(sessionId);
 
   if (!gameSession) {
     return (
