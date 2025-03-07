@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<!-- This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
 
@@ -33,4 +33,35 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details. -->
+
+1. Development - Frontend and Backend
+2. Database setup
+3. Testing
+4. Deployment
+
+
+Seeding database - npx ts-node prisma/seed.ts
+
+npx prisma format 
+
+npx prisma db push
+
+npx prisma studio 
+
+TODOS: 
+- Finish the logic for the game
+- Add scripts to support database
+- Deploy Website
+
+- Build UI
+- Check for error handling (try catch)
+
+- Create test cases
+- Create Readme file
+
+There is an edge case where the vehicle can't reach the city and come back.
+
+In this case there is no way to assign a vehicle to the city.
+cities - 60 50 40 - 120 100 80
+vehicle - 120 100 60

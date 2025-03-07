@@ -1,7 +1,12 @@
-import { createGameSession } from "@/lib/actions";
-import { redirect } from "next/navigation";
+import { handleStartClick } from "@/lib/actions";
 
 export default async function Home() {
-  const sessionId = await createGameSession();
-  redirect(`/game/${sessionId}/cities`);
+
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <form action={handleStartClick}>
+        <button type="submit">Start</button>
+      </form>
+    </main>
+  );
 }

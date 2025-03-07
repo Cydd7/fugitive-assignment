@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model City {
+  id           Int           @id @default(autoincrement())
+  name         String        @unique
+  distance     Int
+  gameSessions GameSession[] @relation("CityToGameSession")
+  selections   Selection[]   @relation("CityToSelection")
+}
+
+model Vehicle {
+  id         Int         @id @default(autoincrement())
+  kind       String      @unique
+  range      Int
+  max_count  Int
+  selections Selection[] @relation("VehicleToSelection")
+}
+
+model Cops {
+  id         Int         @id @default(autoincrement())
+  name       String      @unique
+  image      String
+  selections Selection[] @relation("CopsToSelection")
+}
+
+model GameSession {
+  id             String      @id @default(uuid())
+  fugitiveCityId Int
+  fugitiveCity   City        @relation("CityToGameSession", fields: [fugitiveCityId], references: [id])
+  createdAt      DateTime    @default(now())
+  selections     Selection[] @relation("GameSessionToSelection")
+}
+
+model Selection {
+  id            String      @id @default(uuid())
+  copId         Int
+  cityId        Int
+  vehicleId     Int?
+  gameSessionId String
+  cop           Cops        @relation("CopsToSelection", fields: [copId], references: [id])
+  city          City        @relation("CityToSelection", fields: [cityId], references: [id])
+  vehicle       Vehicle?    @relation("VehicleToSelection", fields: [vehicleId], references: [id])
+  gameSession   GameSession @relation("GameSessionToSelection", fields: [gameSessionId], references: [id])
+}
