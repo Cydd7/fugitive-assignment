@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getCitiesAndCops, getGameSession, getSelections } from "@/lib/actions";
 import { determineWinningCop } from "@/lib/utils";
 import { Loading } from "@/app/components/Loading";
+import { ImageDisplay } from "@/app/components/ImageDisplay";
 
 export default async function ResultPage({ params }: { params: { sessionId: string } }) {
   return (
@@ -30,20 +31,27 @@ async function ResultWrapper({ sessionId }: { sessionId: string }) {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-gradient-to-r from-blue-200 to-purple-200 text-gray-800">
-      <div className="text-center">
+      <div className="text-center max-w-md">
         <h1 className="text-5xl font-bold mb-4">Result</h1>
-        {winningCop ? (
-          <p className="text-lg">{winningCop?.name} captured the fugitive!</p>
-        ) : (
-          <p className="text-lg">The fugitive escaped!</p>
-        )}
-      </div>
 
-      {/* Add a button to go back to the home page */}
-      <div className="mt-8">
-        <Link href="/" className="bg-yellow-500 hover:bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg transition duration-300">
-          Restart Game
-        </Link>
+        <div className="bg-white/80 p-6 rounded-lg shadow-lg mb-8">
+          <div className="flex flex-col items-center">
+            <ImageDisplay
+              src={`/images/${winningCop ? "cop-" + winningCop.id : "criminal"}.png`}
+              alt={winningCop ? winningCop?.name : "criminal"}
+              width={300}
+              height={300}
+              className="mb-4"
+            />
+            <p className="text-lg font-semibold">{winningCop ? winningCop?.name + " captured the fugitive!" : "The fugitive escaped!"}</p>
+          </div>
+        </div>
+
+        <div className="mt-8">
+          <Link href="/" className="bg-yellow-500 hover:bg-yellow-400 text-black font-semibold py-3 px-4 rounded-lg transition duration-300">
+            Restart Game
+          </Link>
+        </div>
       </div>
     </main>
   );
