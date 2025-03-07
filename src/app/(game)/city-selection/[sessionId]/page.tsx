@@ -6,8 +6,6 @@ export default async function CitySelectionPage({ params }: { params: { sessionI
   const { cities, cops } = await getCitiesAndCops();
   const selections = await getSelections(params.sessionId);
 
-  console.log("server", cities, cops, selections);
-
   return (
     <div>
       <CityForm sessionId={params.sessionId} cities={cities} cops={cops} selections={selections} />
