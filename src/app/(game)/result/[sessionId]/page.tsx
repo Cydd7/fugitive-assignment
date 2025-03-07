@@ -1,60 +1,33 @@
 import { getCitiesAndCops, getGameSession, getSelections, getVehicles } from "@/lib/actions";
-import { prisma } from "@/lib/db";
-import { ISelection, IGameSession, IVehicle, ICity, ICop } from "@/lib/types";
-
-async function determineWinningCop(selections: ISelection[], gameSession: IGameSession, vehicles: IVehicle[], cities: ICity[], cops: ICop[]) {
-  console.log(vehicles, cities, cops)
-
-  const { fugitiveCityId } = gameSession;
-
-  // Check if the fugitive city is in the selections
-  const fugitiveCitySelection = selections.find(selection => selection.cityId === fugitiveCityId);
-  if (!fugitiveCitySelection) return null; // Cops did not select the fugitive city
-
-  // Get the vehicle and city from db
-  const vehicle = await prisma.vehicle.findUnique({
-    where: { id: fugitiveCitySelection.vehicleId ?? undefined },
-  });
-  const city = await prisma.city.findUnique({
-    where: { id: fugitiveCitySelection.cityId ?? undefined },
-  });
-
-  // Ensure vehicle and city are defined and have valid values
-  if (vehicle && city && vehicle.range !== null && city.distance !== null) {
-    if (vehicle.range >= city.distance * 2) {
-      return cops.find(c => c.id === fugitiveCitySelection.copId); // Return the cop if they have enough range
-    }
-  }
-
-  return null; // No cop found the fugitive
-}
+import { determineWinningCop } from "@/lib/utils";
 
 export default async function ResultPage({ params }: { params: { sessionId: string } }) {
   const { cities, cops } = await getCitiesAndCops();
   const selections = await getSelections(params.sessionId);
   const vehicles = await getVehicles();
-
-  // Get GameSession
   const gameSession = await getGameSession(params.sessionId);
 
   if (!gameSession) {
-    return <div>Game session not found</div>; // Handle the case where the game session does not exist
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center p-6 bg-gradient-to-r from-blue-200 to-purple-200 text-gray-800">
+        <h1 className="text-4xl font-bold">Game session not found</h1>
+      </div>
+    );
   }
-
-
-  if (!params.sessionId) return <div>Game not found</div>;
 
   // Logic to determine the winning cop
   const winningCop = await determineWinningCop(selections, gameSession, vehicles, cities, cops);
 
   return (
-    <div>
-      <h1>Result</h1>
-      {winningCop ? (
-        <p>Cop {winningCop?.name} captured the fugitive!</p>
-      ) : (
-        <p>The fugitive escaped!</p>
-      )}
-    </div>
+    <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-gradient-to-r from-blue-200 to-purple-200 text-gray-800">
+      <div className="text-center">
+        <h1 className="text-5xl font-bold mb-4">Result</h1>
+        {winningCop ? (
+          <p className="text-lg">{winningCop?.name} captured the fugitive!</p>
+        ) : (
+          <p className="text-lg">The fugitive escaped!</p>
+        )}
+      </div>
+    </main>
   );
 }

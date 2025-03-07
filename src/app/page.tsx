@@ -2,10 +2,10 @@ import { handleStartClick } from "@/lib/actions";
 
 export default async function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+    <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-gradient-to-r from-blue-200 to-purple-200 text-gray-800">
       <div className="text-center">
         <h1 className="text-5xl font-bold mb-4">Cop and Thief Game</h1>
-        <p className="text-lg mb-8">
+        <p className="text-lg mb-8 mx-[20%]">
           Join the chase! As a cop, your mission is to catch the thief before they escape. Choose your city and vehicle wisely!
         </p>
         <form action={handleStartClick}>

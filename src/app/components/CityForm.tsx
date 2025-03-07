@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { ICity, ICop, ISelection } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -7,9 +7,10 @@ import { createCityFormSchema } from "@/lib/schema";
 import { Error } from "./Error";
 import { handleCitySelection } from "@/lib/utils";
 
-export function CityForm({ sessionId, cities, cops, selections }: { sessionId: string, cities: ICity[], cops: ICop[], selections: ISelection[] }) {
-
+export function CityForm({ cities, cops, selections }: { cities: ICity[], cops: ICop[], selections: ISelection[] }) {
   const router = useRouter();
+  const params = useParams();
+  const sessionId = params.sessionId as string;
   const {
     register,
     handleSubmit,
@@ -24,15 +25,13 @@ export function CityForm({ sessionId, cities, cops, selections }: { sessionId: s
     },
   });
 
-  console.log(sessionId, cities, cops, selections);
-
   async function handleCityFormSubmit(data: Record<string, string>) {
     await handleCitySelection(data, sessionId, selections);
     router.push(`/vehicle-selection/${sessionId}`);
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-gradient-to-r from-blue-500 to-purple-500 text-white">
+    <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-gradient-to-r from-blue-200 to-purple-200 text-gray-800">
       <div className="text-center">
         <h1 className="text-4xl font-bold mb-4">Select Cities for Cops</h1>
 
@@ -63,7 +62,6 @@ export function CityForm({ sessionId, cities, cops, selections }: { sessionId: s
             Submit
           </button>
         </form>
-
       </div>
     </main>
   );

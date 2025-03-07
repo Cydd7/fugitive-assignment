@@ -8,7 +8,7 @@ export default async function CitySelectionPage({ params }: { params: { sessionI
 
   return (
     <div>
-      <CityForm sessionId={params.sessionId} cities={cities} cops={cops} selections={selections} />
+      <CityForm cities={cities} cops={cops} selections={selections} />
     </div>
   );
 }
